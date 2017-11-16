@@ -52,7 +52,7 @@ const rhyke = new Rhyke({
 
 ## Options
 `Rhyke` accepts one object as its options:
-```
+```javascript
 defaultOptions = {
     // morse code listening area
     el: 'body',
