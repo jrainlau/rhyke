@@ -1,0 +1,29 @@
+{
+  "name": "rhyke",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./webpack/dev.js",
+    "build": "node ./webpack/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrainlau/rhyke.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrainlau/rhyke/issues"
+  },
+  "homepage": "https://github.com/jrainlau/rhyke#readme",
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.17",
+    "html-webpack-plugin": "^2.30.1",
+    "uglifyjs-webpack-plugin": "^1.0.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3",
+    "webpack-merge": "^4.1.0"
+  }
+}
