@@ -13,6 +13,7 @@ class Rhyke {
     }, options)
 
     this.el = document.querySelector(this.options.el)
+    this.timer
 
     this.tabStartEvent = this.options.tabEvent ? 'touchstart' : 'mousedown'
     this.tabEndEvent = this.options.tabEvent ? 'touchend' : 'mouseup'
@@ -22,32 +23,37 @@ class Rhyke {
 
     this.userRhythm = []
     this.isTimeout = false
-    this.timeoutStart = 0
-    this.timeout = 0
 
     this.addListener()
   }
 
   tabStartFunc () {
+    this.stopTimer()
     this.tabStart = new Date().getTime()
-    this.timeout = this.timeout === 0 ? 1 : new Date().getTime() - this.timeoutStart
-    this.isTimeout = this.timeout > this.options.timeout ? true : false
-    if (this.isTimeout) {
-      this.options.onTimeout()
-      this.reset()
-    }
   }
 
   tabEndFunc () {
     this.tabTime = new Date().getTime() - this.tabStart
-    this.timeoutStart = new Date().getTime()
     if (!this.isTimeout) {
       this.tabTime < this.options.dashTime ? this.userRhythm.push('.') : this.userRhythm.push('-')
       this.options.matching(this.userRhythm)
       this.matchRhythem(this.userRhythm)
+      this.startTimer()
     } else {
       this.reset()
     }
+  }
+
+  startTimer () {
+    this.timer = setTimeout(() => {
+      this.isTimeout = true
+      this.reset()
+      this.options.onTimeout()
+    }, this.options.timeout)
+  }
+
+  stopTimer () {
+    clearTimeout(this.timer)
   }
 
   addListener () {

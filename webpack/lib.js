@@ -11,14 +11,21 @@ const webpackConfig = webpackMerge(basicConfig, {
   output: {
     path: resolve(__dirname, '../dist'),
     filename: 'index.js',
-    library: 'rhyke',
+    library: 'Rhyke',
     libraryTarget: 'umd'
+  },
+  module: {
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: ['babel-loader']
+    }]
   },
   plugins: [
     new cleanWebpackPlugin(['dist'], {
       root: resolve(__dirname, '../')
     }),
-    // new UglifyJSPlugin()
+    new UglifyJSPlugin()
   ]
 })
 

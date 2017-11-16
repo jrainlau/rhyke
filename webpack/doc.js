@@ -5,6 +5,7 @@ const basicConfig = require('./base')
 const cleanWebpackPlugin = require('clean-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const htmlWebpackPlugin = require('html-webpack-plugin')
+const extractTextPlugin = require('extract-text-webpack-plugin')
 
 const webpackConfig = webpackMerge(basicConfig, {
   entry: {
@@ -15,11 +16,26 @@ const webpackConfig = webpackMerge(basicConfig, {
     filename: '[name].[chunkhash:4].js'
   },
   devtool: 'cheap-eval-source-map',
+  module: {
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: ['babel-loader']
+    }, {
+      test: /\.less$/,
+      use: extractTextPlugin.extract(['css-loader', 'less-loader'])
+    }]
+  },
   plugins: [
     new cleanWebpackPlugin(['docs'], {
       root: resolve(__dirname, '../')
     }),
     new UglifyJSPlugin(),
+    new extractTextPlugin({
+      filename: (getPath) => {
+        return getPath('./css/[name].css').replace('./js/', '')
+      }
+    }),
     new htmlWebpackPlugin({
       filename: 'index.html',
       template: resolve(__dirname, '../htmlTpl.tpl'),
