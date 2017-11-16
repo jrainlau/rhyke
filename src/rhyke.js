@@ -5,7 +5,7 @@ class Rhyke {
       rhythm: '...',
       dashTime: 400,
       timeout: 2000,
-      isMobile: true,
+      tabEvent: false,
       matching: () => {},
       matched: () => {},
       unmatched: () => {},
@@ -14,8 +14,8 @@ class Rhyke {
 
     this.el = document.querySelector(this.options.el)
 
-    this.tabStartEvent = this.options.isMobile ? 'touchstart' : 'mousedown'
-    this.tabEndEvent = this.options.isMobile ? 'touchend' : 'mouseup'
+    this.tabStartEvent = this.options.tabEvent ? 'touchstart' : 'mousedown'
+    this.tabEndEvent = this.options.tabEvent ? 'touchend' : 'mouseup'
 
     this.tabStart = 0
     this.tabTime = 0

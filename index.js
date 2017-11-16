@@ -2,7 +2,7 @@ import Rhyke from './src/rhyke'
 
 const rhyke = new Rhyke({
   el: 'body',
-  rhythm: '...---...',
+  rhythm: '.-.',
   matching (arr) {
     console.log(arr)
   },
