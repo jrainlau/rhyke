@@ -78,7 +78,7 @@ defaultOptions = {
 
 ## API
 Once the `matched` or `unmatched` triggered, you may want to remove the event listener of the element you bind:
-```
+```javascript
 matched () {
   // something was awoke
   rhyke.removeListener()
