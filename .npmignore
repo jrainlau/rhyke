@@ -1,0 +1,5 @@
+node_modules/
+webpack/
+docs/
+*.tpl
+index.js

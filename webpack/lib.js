@@ -7,25 +7,18 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 
 const webpackConfig = webpackMerge(basicConfig, {
-  entry: {
-    './js/app': resolve(__dirname, '../index.js')
-  },
+  entry: resolve(__dirname, '../src/rhyke.js'),
   output: {
     path: resolve(__dirname, '../dist'),
-    filename: '[name].[chunkhash:4].js'
+    filename: 'index.js',
+    library: 'rhyke',
+    libraryTarget: 'umd'
   },
-  devtool: 'cheap-eval-source-map',
   plugins: [
     new cleanWebpackPlugin(['dist'], {
       root: resolve(__dirname, '../')
     }),
-    new UglifyJSPlugin(),
-    new htmlWebpackPlugin({
-      filename: 'index.html',
-      template: resolve(__dirname, '../htmlTpl.tpl'),
-      inject: true,
-      chunks: ['./js/app']
-    })
+    // new UglifyJSPlugin()
   ]
 })
 
