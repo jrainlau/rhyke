@@ -1,11 +1,13 @@
 {
   "name": "rhyke",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "node ./webpack/dev.js",
-    "build": "node ./webpack/build.js"
+    "build:lib": "node ./webpack/lib.js",
+    "build:doc": "node ./webpack/doc.js",
+    "release": "node_modules/.bin/standard-version"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.17",
     "html-webpack-plugin": "^2.30.1",
+    "standard-version": "^4.2.0",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3",
