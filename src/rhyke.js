@@ -1,3 +1,9 @@
+/**
+ * @name Rhyke
+ * @author Jrain Lau jrainlau@gmail.com
+ * @license MIT
+ */
+
 class Rhyke {
   constructor (options = {}) {
     this.options = Object.assign({
@@ -24,71 +30,71 @@ class Rhyke {
     this.userRhythm = []
     this.isTimeout = false
 
-    this.addListener()
+    this._addListener()
   }
 
-  tabStartFunc () {
-    this.stopTimer()
+  _tabStartFunc () {
+    this._stopTimer()
     this.tabStart = new Date().getTime()
   }
 
-  tabEndFunc () {
+  _tabEndFunc () {
     this.tabTime = new Date().getTime() - this.tabStart
     if (!this.isTimeout) {
       this.tabTime < this.options.dashTime ? this.userRhythm.push('.') : this.userRhythm.push('-')
       this.options.matching(this.userRhythm)
-      this.matchRhythem(this.userRhythm)
-      this.startTimer()
+      this._matchRhythem(this.userRhythm)
+      this._startTimer()
     } else {
-      this.reset()
+      this._reset()
     }
   }
 
-  startTimer () {
+  _startTimer () {
     this.timer = setTimeout(() => {
       this.isTimeout = true
-      this.reset()
+      this._reset()
       this.options.onTimeout()
     }, this.options.timeout)
   }
 
-  stopTimer () {
+  _stopTimer () {
     clearTimeout(this.timer)
   }
 
-  addListener () {
+  _addListener () {
     this.registedTabStartFunc = () => {
-      this.tabStartFunc()
+      this._tabStartFunc()
     }
     this.registedTabEndFuc = () => {
-      this.tabEndFunc()
+      this._tabEndFunc()
     }
     this.el.addEventListener(this.tabStartEvent, this.registedTabStartFunc)
     this.el.addEventListener(this.tabEndEvent, this.registedTabEndFuc)
   }
 
-  removeListener () {
-    this.el.removeEventListener(this.tabStartEvent, this.registedTabStartFunc)
-    this.el.removeEventListener(this.tabEndEvent, this.registedTabEndFuc)
-  }
-
-  matchRhythem (userRhythm) {
+  _matchRhythem (userRhythm) {
     const rhythm = this.options.rhythm
     const testRhythm = userRhythm.join('')
     if (testRhythm.length === rhythm.length && testRhythm === rhythm) {
       this.options.matched()
-      this.reset()
+      this._reset()
     } else if (testRhythm.length === rhythm.length && testRhythm !== rhythm) {
       this.options.unmatched()
-      this.reset()
+      this._reset()
     }
   }
 
-  reset () {
+  _reset () {
     this.userRhythm = []
     this.isTimeout = false
     this.timeoutStart = 0
     this.timeout = 0
+  }
+
+  removeListener () {
+    this.el.removeEventListener(this.tabStartEvent, this.registedTabStartFunc)
+    this.el.removeEventListener(this.tabEndEvent, this.registedTabEndFuc)
   }
 }
 
