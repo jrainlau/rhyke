@@ -2,5 +2,7 @@ node_modules/
 webpack/
 docs/
 src/
+style/
+.babelrc
 *.tpl
 index.js
