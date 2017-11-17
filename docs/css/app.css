@@ -88,7 +88,7 @@ main .input div span.wrong {
   main .input div {
     width: 300px;
     height: 280px;
-    line-height: 260px;
+    line-height: 280px;
   }
 }
 main .document a {
