@@ -4,6 +4,17 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  user-select: none;
 }
 
 main {
@@ -30,6 +41,14 @@ main {
       margin: 15px 0;
       text-align: center;
       font-size: 24px;
+    }
+    @media screen and (max-width: 414px) {
+      h1 {
+        font-size: 58px;
+      }
+      h3, p {
+        font-size: 14px;
+      }
     }
   }
   .input {
@@ -62,6 +81,13 @@ main {
           background-color: #ff1744;
           transform: scale3d(1.5, 1.5, 1.5);
         }
+      }
+    }
+    @media screen and (max-width: 414px) {
+      div {
+        width: 300px;
+        height: 280px;
+        line-height: 260px;
       }
     }
   }
