@@ -17,14 +17,14 @@ import Rhyke from 'rhyke'
 
 - CommonJS
 ```javascript
-const Rhyke = require('rhyke').default
+const Rhyke = require('rhyke')
 ```
 
 - Web broswer
-```javascript
+```html
 <script src="rhyke.js"></script>
 <script>
-    const Rhyke = window.Rhyke.default
+    const Rhyke = window.Rhyke
 </script>
 ```
 
