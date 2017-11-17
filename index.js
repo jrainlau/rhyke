@@ -10,6 +10,19 @@ const dot1 = document.querySelector('.input-dot__1')
 const dash = document.querySelector('.input-dash')
 const dot2 = document.querySelector('.input-dot__2')
 
+function isPC () {
+  const ua = navigator.userAgent
+  const agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
+  let flag = true
+  for (let i = 0, len = agents.length; i < len; i++) {
+    if (ua.indexOf(agents[i]) > 0) {
+      flag = false
+      break
+    }
+  }
+  return flag
+}
+
 function watcher (rhykeArr, itemArr) {
   const rhythm = ['.', '-', '.']
   itemArr.forEach((item, index) => {
@@ -41,6 +54,7 @@ function allCorrect (itemArr) {
 const rhyke = new Rhyke({
   el: '.input',
   rhythm: '.-.',
+  tabEvent: !isPC(),
   matching (arr) {
     console.log(arr);
     watcher(arr, [dot1, dash, dot2])
