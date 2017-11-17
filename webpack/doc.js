@@ -33,7 +33,7 @@ const webpackConfig = webpackMerge(basicConfig, {
     new UglifyJSPlugin(),
     new extractTextPlugin({
       filename: (getPath) => {
-        return getPath('./css/[name].css').replace('./js/', '')
+        return getPath('./css/[name].[chunkhash:6].css').replace('./js/', '')
       }
     }),
     new htmlWebpackPlugin({
