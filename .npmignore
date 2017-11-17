@@ -2,6 +2,7 @@ node_modules/
 webpack/
 rollup/
 docs/
+imgs/
 src/
 style/
 .babelrc
