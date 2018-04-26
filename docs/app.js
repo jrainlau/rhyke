@@ -5,38 +5,28 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
   /**
    * @name Rhyke
    * @author Jrain Lau jrainlau@gmail.com
    * @license MIT
    */
 
-  var Rhyke = function () {
-    function Rhyke() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      _classCallCheck(this, Rhyke);
-
-      this.options = _extends({
+  class Rhyke {
+    constructor (options = {}) {
+      this.options = Object.assign({
         el: 'body',
         rhythm: '...',
         dashTime: 400,
         timeout: 2000,
         tabEvent: false,
-        matching: function matching() {},
-        matched: function matched() {},
-        unmatched: function unmatched() {},
-        onTimeout: function onTimeout() {}
+        matching: () => {},
+        matched: () => {},
+        unmatched: () => {},
+        onTimeout: () => {}
       }, options);
 
       this.el = document.querySelector(this.options.el);
-      this.timer;
+      this.timer = null;
 
       this.tabStartEvent = this.options.tabEvent ? 'touchstart' : 'mousedown';
       this.tabEndEvent = this.options.tabEvent ? 'touchend' : 'mouseup';
@@ -50,86 +40,70 @@
       this._addListener();
     }
 
-    _createClass(Rhyke, [{
-      key: '_tabStartFunc',
-      value: function _tabStartFunc() {
-        this._stopTimer();
-        this.tabStart = new Date().getTime();
-      }
-    }, {
-      key: '_tabEndFunc',
-      value: function _tabEndFunc() {
-        this.tabTime = new Date().getTime() - this.tabStart;
-        if (!this.isTimeout) {
-          this.tabTime < this.options.dashTime ? this.userRhythm.push('.') : this.userRhythm.push('-');
-          this.options.matching(this.userRhythm);
-          this._matchRhythem(this.userRhythm);
-          this._startTimer();
-        } else {
-          this._reset();
-        }
-      }
-    }, {
-      key: '_startTimer',
-      value: function _startTimer() {
-        var _this = this;
+    _tabStartFunc () {
+      this._stopTimer();
+      this.tabStart = new Date().getTime();
+    }
 
-        this.timer = setTimeout(function () {
-          _this.isTimeout = true;
-          _this._reset();
-          _this.options.onTimeout();
-        }, this.options.timeout);
+    _tabEndFunc () {
+      this.tabTime = new Date().getTime() - this.tabStart;
+      if (!this.isTimeout) {
+        this.tabTime < this.options.dashTime ? this.userRhythm.push('.') : this.userRhythm.push('-');
+        this.options.matching(this.userRhythm);
+        this._matchRhythem(this.userRhythm);
+        this._startTimer();
+      } else {
+        this._reset();
       }
-    }, {
-      key: '_stopTimer',
-      value: function _stopTimer() {
-        clearTimeout(this.timer);
-      }
-    }, {
-      key: '_addListener',
-      value: function _addListener() {
-        var _this2 = this;
+    }
 
-        this.registedTabStartFunc = function () {
-          _this2._tabStartFunc();
-        };
-        this.registedTabEndFuc = function () {
-          _this2._tabEndFunc();
-        };
-        this.el.addEventListener(this.tabStartEvent, this.registedTabStartFunc);
-        this.el.addEventListener(this.tabEndEvent, this.registedTabEndFuc);
-      }
-    }, {
-      key: '_matchRhythem',
-      value: function _matchRhythem(userRhythm) {
-        var rhythm = this.options.rhythm;
-        var testRhythm = userRhythm.join('');
-        if (testRhythm.length === rhythm.length && testRhythm === rhythm) {
-          this.options.matched();
-          this._reset();
-        } else if (testRhythm.length === rhythm.length && testRhythm !== rhythm) {
-          this.options.unmatched();
-          this._reset();
-        }
-      }
-    }, {
-      key: '_reset',
-      value: function _reset() {
-        this.userRhythm = [];
-        this.isTimeout = false;
-        this.timeoutStart = 0;
-        this.timeout = 0;
-      }
-    }, {
-      key: 'removeListener',
-      value: function removeListener() {
-        this.el.removeEventListener(this.tabStartEvent, this.registedTabStartFunc);
-        this.el.removeEventListener(this.tabEndEvent, this.registedTabEndFuc);
-      }
-    }]);
+    _startTimer () {
+      this.timer = setTimeout(() => {
+        this.isTimeout = true;
+        this._reset();
+        this.options.onTimeout();
+      }, this.options.timeout);
+    }
 
-    return Rhyke;
-  }();
+    _stopTimer () {
+      clearTimeout(this.timer);
+    }
+
+    _addListener () {
+      this.registedTabStartFunc = () => {
+        this._tabStartFunc();
+      };
+      this.registedTabEndFuc = () => {
+        this._tabEndFunc();
+      };
+      this.el.addEventListener(this.tabStartEvent, this.registedTabStartFunc);
+      this.el.addEventListener(this.tabEndEvent, this.registedTabEndFuc);
+    }
+
+    _matchRhythem (userRhythm) {
+      const rhythm = this.options.rhythm;
+      const testRhythm = userRhythm.join('');
+      if (testRhythm.length === rhythm.length && testRhythm === rhythm) {
+        this.options.matched();
+        this._reset();
+      } else if (testRhythm.length === rhythm.length && testRhythm !== rhythm) {
+        this.options.unmatched();
+        this._reset();
+      }
+    }
+
+    _reset () {
+      this.userRhythm = [];
+      this.isTimeout = false;
+      this.timeoutStart = 0;
+      this.timeout = 0;
+    }
+
+    removeListener () {
+      this.el.removeEventListener(this.tabStartEvent, this.registedTabStartFunc);
+      this.el.removeEventListener(this.tabEndEvent, this.registedTabEndFuc);
+    }
+  }
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -178,26 +152,26 @@
   var css = "html,\nbody {\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n* {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n  user-select: none;\n}\nmain {\n  background: pink;\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\nmain .title {\n  color: #fff;\n}\nmain .title h1 {\n  font-size: 68px;\n  text-align: center;\n  margin: 0;\n}\nmain .title h3 {\n  font-size: 24px;\n  text-align: center;\n  margin: 0;\n}\nmain .title p {\n  margin: 15px 0;\n  text-align: center;\n  font-size: 24px;\n}\n@media screen and (max-width: 414px) {\n  main .title h1 {\n    font-size: 58px;\n  }\n  main .title h3,\n  main .title p {\n    font-size: 14px;\n  }\n}\nmain .input {\n  margin: 30px 0;\n}\nmain .input div {\n  width: 400px;\n  height: 380px;\n  line-height: 380px;\n  text-align: center;\n  border: 5px dashed #fff;\n}\nmain .input div span {\n  display: inline-block;\n  font-weight: bold;\n  background-color: #fff;\n  transform-origin: center;\n  margin: 0 20px;\n}\nmain .input div span.input-dot {\n  width: 20px;\n  height: 20px;\n}\nmain .input div span.input-dash {\n  width: 100px;\n  height: 20px;\n}\nmain .input div span.correct {\n  background-color: #4caf50;\n  transform: scale3d(1.5, 1.5, 1.5);\n}\nmain .input div span.wrong {\n  background-color: #ff1744;\n  transform: scale3d(1.5, 1.5, 1.5);\n}\n@media screen and (max-width: 414px) {\n  main .input div {\n    width: 300px;\n    height: 280px;\n    line-height: 280px;\n  }\n}\nmain .document a {\n  display: block;\n  border: 5px solid #fff;\n  padding: 10px 15px;\n  color: #fff;\n  text-decoration: none;\n  outline: none;\n}\n";
   styleInject(css);
 
-  var dot1 = document.querySelector('.input-dot__1');
-  var dash = document.querySelector('.input-dash');
-  var dot2 = document.querySelector('.input-dot__2');
+  const dot1 = document.querySelector('.input-dot__1');
+  const dash = document.querySelector('.input-dash');
+  const dot2 = document.querySelector('.input-dot__2');
 
-  function isPC() {
-    var ua = navigator.userAgent;
-    var agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
-    var flag = true;
-    for (var i = 0, len = agents.length; i < len; i++) {
+  function isPC () {
+    const ua = navigator.userAgent;
+    const agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
+    let flag = true;
+    for (let i = 0, len = agents.length; i < len; i++) {
       if (ua.indexOf(agents[i]) > 0) {
         flag = false;
-        break;
+        break
       }
     }
-    return flag;
+    return flag
   }
 
-  function watcher(rhykeArr, itemArr) {
-    var rhythm = ['.', '-', '.'];
-    itemArr.forEach(function (item, index) {
+  function watcher (rhykeArr, itemArr) {
+    const rhythm = ['.', '-', '.'];
+    itemArr.forEach((item, index) => {
       if (rhykeArr.length === index + 1) {
         if (rhykeArr[index] === rhythm[index]) {
           item.classList.remove('correct', 'wrong');
@@ -210,53 +184,55 @@
     });
   }
 
-  function reset(itemArr) {
-    itemArr.forEach(function (item) {
+  function reset (itemArr) {
+    itemArr.forEach((item) => {
       item.classList.remove('correct', 'wrong');
     });
   }
 
-  function allCorrect(itemArr) {
-    itemArr.forEach(function (item) {
+  function allCorrect (itemArr) {
+    itemArr.forEach((item) => {
       item.classList.remove('correct', 'wrong');
       item.classList.add('correct');
     });
   }
 
-  var rhyke = new Rhyke({
+  const rhyke = new Rhyke({
     el: '.input',
     rhythm: '.-.',
     tabEvent: !isPC(),
-    matching: function matching(arr) {
+    matching (arr) {
       console.log(arr);
       watcher(arr, [dot1, dash, dot2]);
     },
-    matched: function matched() {
+    matched () {
       allCorrect([dot1, dash, dot2]);
       console.log('Match!!!');
       swal('Wow', 'Rhythm matched!', 'success', {
         buttons: false,
         timer: 2000
       });
-      setTimeout(function () {
+      setTimeout(() => {
         reset([dot1, dash, dot2]);
       }, 1000);
       // rhyke.removeListener()
     },
-    unmatched: function unmatched() {
+    unmatched () {
       console.log('Unmatch!!!');
       swal('Ooops', 'Rhythm unmatched...', 'error', {
         buttons: false,
         timer: 2000
       });
-      setTimeout(function () {
+      setTimeout(() => {
         reset([dot1, dash, dot2]);
       }, 1000);
     },
-    onTimeout: function onTimeout() {
+    onTimeout () {
       reset([dot1, dash, dot2]);
       console.log('Timeout already, restart matching.');
     }
   });
+
+  window.rhyke = rhyke;
 
 })));

@@ -1,20 +1,16 @@
 import { resolve } from 'path'
-import babel from 'rollup-plugin-babel'
 import uglify from 'rollup-plugin-uglify'
-import eslint from 'rollup-plugin-eslint'
+import typescript from 'rollup-plugin-typescript'
 
 export default {
-  input: resolve(__dirname, '../src/rhyke.js'),
+  input: resolve(__dirname, '../src/rhyke.new.ts'),
   output: {
     file: resolve(__dirname, '../dist/index.js'),
     name: 'Rhyke',
     format: 'umd'
   },
   plugins: [
-    eslint(),
-    babel({
-      exclude: 'node_modules/**'
-    }),
+    typescript(),
     uglify()
   ]
 }
