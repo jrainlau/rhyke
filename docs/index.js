@@ -1,10 +1,6 @@
-import Rhyke from './src/rhyke'
+import Rhyke from '../src/rhyke'
 import swal from 'sweetalert'
 import './style/main.less'
-
-if (module.hot) {
-  module.hot.accept()
-}
 
 const dot1 = document.querySelector('.input-dot__1')
 const dash = document.querySelector('.input-dash')
@@ -56,7 +52,7 @@ const rhyke = new Rhyke({
   rhythm: '.-.',
   tabEvent: !isPC(),
   matching (arr) {
-    console.log(arr);
+    console.log(arr)
     watcher(arr, [dot1, dash, dot2])
   },
   matched () {
@@ -86,3 +82,5 @@ const rhyke = new Rhyke({
     console.log('Timeout already, restart matching.')
   }
 })
+
+window.rhyke = rhyke

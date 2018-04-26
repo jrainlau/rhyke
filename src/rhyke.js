@@ -19,7 +19,7 @@ class Rhyke {
     }, options)
 
     this.el = document.querySelector(this.options.el)
-    this.timer
+    this.timer = null
 
     this.tabStartEvent = this.options.tabEvent ? 'touchstart' : 'mousedown'
     this.tabEndEvent = this.options.tabEvent ? 'touchend' : 'mouseup'
